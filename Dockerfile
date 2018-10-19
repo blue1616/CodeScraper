@@ -1,7 +1,6 @@
 FROM debian:latest
 
-RUN apt-get update && apt-get install -y wget unzip python3 python3-dev python3-pip \
-  --no-install-recommends  && \
+RUN apt-get update && apt-get install -y wget unzip python3 python3-dev python3-pip && \
   rm -rf /var/lib/apt/lists/* && \
   mkdir -p /home/codescraper/ && \
   wget https://github.com/blue1616/CodeScraper/archive/master.zip -P /tmp && \
@@ -10,7 +9,7 @@ RUN apt-get update && apt-get install -y wget unzip python3 python3-dev python3-
   rm -rf /tmp/*
 
 ADD requirements /tmp/requirements
-RUN pip3 install -i /tmp/requirements
+RUN pip3 install -r /tmp/requirements
 
 RUN groupadd -r codescraper && useradd -r -g codescraper -G audio,video codescraper && \
   usermod -u 1000 codescraper && groupmod -g 1000 codescraper && \
@@ -18,5 +17,5 @@ RUN groupadd -r codescraper && useradd -r -g codescraper -G audio,video codescra
   chown -R codescraper:codescraper /home/codescraper
 
 USER codescraper
-WORKDIR /home/codescraper
-CMD [python3, /home/codescraper/master/run.py]
+WORKDIR /home/codescraper/master
+CMD ["python3", "/home/codescraper/master/run.py"]

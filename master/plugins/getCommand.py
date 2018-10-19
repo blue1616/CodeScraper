@@ -487,15 +487,19 @@ def reMatchTest(message, params):
     if words[0].strip().isdigit():
       index = int(words[0].strip())
       if len(words) > 1:
-        candidatelist = ec.getCandidatelist(g)
+        candidatelist = ec.getCandidatelist(target)
         if index in candidatelist.values():
-          key = candidatelist.get(index)
+          key = ''
+          for k,v in candidatelist.items():
+            if v == index:
+              key = k
+              break
           word = words[1].strip()
           post_data = ''
           if word.startswith('https://pastebin.com/'):
             if not word.startswith('https://pastebin.com/raw/'):
               word = word.replace('https://pastebin.com/','https://pastebin.com/raw/', 1)
-            raw_result = requests.get(word, headers=headers)
+            raw_result = requests.get(word)
             if raw_result.status_code == 200:
               patt = re.compile(key, re.IGNORECASE)
               if re.search(patt, raw_result.text):
