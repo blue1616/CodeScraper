@@ -1,0 +1,3 @@
+slackbot==0.5.3
+lxml==4.2.4
+crontab==0.22.2

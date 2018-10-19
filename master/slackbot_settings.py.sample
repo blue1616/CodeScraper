@@ -1,0 +1,106 @@
+# -*- coding: utf-8 -*-
+
+# API Token for Slackbot
+# https://api.slack.com/bot-users
+# CodeScraper uses lins05/slackbot (https://github.com/lins05/slackbot)
+API_TOKEN = "XXXX-XXXXXXXXXXXX-XXXXXXXXXXXXXXXXXXXXXXXX"
+
+default_reply = "What you mean?"
+
+# Do not edit
+PLUGINS = [
+  'plugins',
+]
+
+# Slack Cannels participating slackbot
+# make channels and invete your slackbot
+channels = [
+  "codescraper",
+  "test_channel"]
+
+# Default Setting of Search Candidates
+# You should change 'channel' name to one of the above
+github_default_settings = {
+  'Enable':True,
+  'SearchLevel':2,
+  'Time_Range':2,
+  'Expire_date':180,
+  'Exclude_list':[],
+  'Channel':'codescraper' # You should change it
+}
+
+gist_default_settings = {
+  'Enable':True,
+  'Time_Range':2,
+  'Expire_date':180,
+  'Exclude_list':[],
+  'Channel':'codescraper' # You should change it
+}
+
+github_code_default_settings = {
+  'Enable':True,
+  'SearchLevel':2,
+  'Expire_date':180,
+  'Exclude_list':[],
+  'Channel':'codescraper' # You should change it
+}
+
+gitlab_default_settings = {
+  'Enable':True,
+  'Expire_date':180,
+  'Exclude_list':[],
+  'Channel':'codescraper' # You should change it
+}
+
+gitlab_snippet_default_settings = {
+  'Enable':True,
+  'Expire_date':180,
+  'Exclude_list':[],
+  'Channel':'codescraper' # You should change it
+}
+
+pastebin_default_settings = {
+  'Enable':True,
+  'Expire_date':180,
+  'Exclude_list':[],
+  'Channel':'codescraper' # You should change it
+}
+
+google_custom_default_settings = {
+  'Enable':True,
+  'Expire_date':180,
+  'Exclude_list':[],
+  'Channel':'codescraper' # You should change it
+}
+
+# github_access_token is required for searching github_code (not needed for github and gist search)
+# Access : https://github.com/settings/tokens
+github_access_token = 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
+
+# Google Custom Search is required API key and search engine id.
+# Google Custom Search API : https://developers.google.com/custom-search/v1/overview
+# Access here : https://console.developers.google.com/
+google_custom_api_key = 'XXXXXXXXXXXXXXXXXXXXXX-XXXXXXXXXXXXXXXX'
+google_custom_search_engine_id = 'XXXXXXXXXXXXXXXXXXXXX:XXXXXXXXXXX'
+
+# Enable Modules
+enable_github_search = True
+enable_github_code_search = True
+enable_gist_search = True
+enable_gitlab_search = True
+enable_gitlab_snippet_search = True
+# Pastebin Search is required pro account and to ask pastebin to whitelist your IP
+enable_pastebin_search = False
+enable_google_custom_search = True
+
+# Interval (Write in Crontab Format)
+github_search_interval = "28 */1 * * *"
+github_code_search_interval = "48 */1 * * *"
+gist_search_interval = "02 */1 * * *"
+gitlab_search_interval = "13 */2 * * *"
+gitlab_snippet_search_interval = "43 */2 * * *"
+pastebin_search_interval = "*/1 * * * *"
+# --*ATTENTION*--
+# free google api allows 100 requests per day
+# if you set search interval to every 2 hour, you can register at most 8 search candidates (12 * 8 = 96 reqs)
+google_custom_search_interval = "53 */2 * * *"
