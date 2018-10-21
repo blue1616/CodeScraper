@@ -496,22 +496,24 @@ def reMatchTest(message, params):
               break
           word = words[1].strip()
           post_data = ''
-          if word.startswith('https://pastebin.com/'):
-            if not word.startswith('https://pastebin.com/raw/'):
-              word = word.replace('https://pastebin.com/','https://pastebin.com/raw/', 1)
+          if re.match('[a-zA-Z0-9]{8}', word):
+            post_data += 'Found Pastebin id pattern.\n'
+            word = 'https://pastebin.com/raw/' + word
             raw_result = requests.get(word)
             if raw_result.status_code == 200:
               patt = re.compile(key, re.IGNORECASE)
               if re.search(patt, raw_result.text):
-                post_data += 'The pattern, `{keyword}` is match in contents of *{url}*'.format(keyword=key, url=word)
+                post_data += 'The pattern, `{keyword}` match to contents of {url}'.format(keyword=key, url=word)
+              else:
+                post_data += 'The pattern, `{keyword}` not match to contents of {url}'.format(keyword=key, url=word)
             else:
               post_data += 'I couldn\'t access to {url}'.format(url=word)
           else:
             patt = re.compile(key, re.IGNORECASE)
             if re.search(patt, word):
-              post_data += 'The pattern, `{keyword}` is match'.format(keyword=key)
+              post_data += 'The pattern, `{keyword}` match'.format(keyword=key)
             else:
-              post_data += 'The pattern, `{keyword}` is not match'.format(keyword=key)
+              post_data += 'The pattern, `{keyword}` not match'.format(keyword=key)
         else:
           post_data = 'No Data'
       else:
