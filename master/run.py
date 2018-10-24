@@ -18,7 +18,7 @@ import traceback
 import sys
 
 base = os.path.dirname(os.path.abspath(__file__))
-configfile = os.path.normpath(os.path.join(base, './settings/searchCandidate.json'))
+configfile = os.path.normpath(os.path.join(base, './settings/searchKeyword.json'))
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -55,7 +55,7 @@ def runSearchGithub():
               if statuscode != 200:
                 error_safety += 1
                 ec.setSafetyCount('github', error_safety)
-                postdata = '`' + key + '` failed to search at _github_.\nStatus Code: ' + str(statuscode)
+                postdata = '`' + key + '` failed to search in _github_.\nStatus Code: ' + str(statuscode)
                 master.postAnyData(postdata, channel)
                 logger.info(postdata)
                 if error_safety > safe_limit:
@@ -75,15 +75,15 @@ def runSearchGithub():
                   ec.addExcludeList('github', conf['Index'], exclude)
               time.sleep(10)
             else:
-              postdata = '`' + key + '` expired at _github_, and was disabled.'
+              postdata = '`' + key + '` expired in _github_, and was disabled.'
               logger.info(postdata)
               master.postAnyData(postdata, channel)
-              ec.enableCandidateSetting('github', conf['Index'], False)
+              ec.enableKeywordSetting('github', conf['Index'], False)
   except:
     logger.error('--ERROR HAS OCCURED IN GITHUB SEARCH--')
     logger.error(traceback.format_exc())
     master.postAnyData(traceback.format_exc(), slackbot_settings.channels[0])
-#    ec.enableCandidateSetting('github', conf['Index'], False)
+#    ec.enableKeywordSetting('github', conf['Index'], False)
 
 def runSearchGithubCode():
   try:
@@ -113,7 +113,7 @@ def runSearchGithubCode():
               if statuscode != 200:
                 error_safety += 1
                 ec.setSafetyCount('github_code', error_safety)
-                postdata = '`' + key + '` failed to search at _github_code_.\nStatus Code: ' + str(statuscode)
+                postdata = '`' + key + '` failed to search in _github_code_.\nStatus Code: ' + str(statuscode)
                 master.postAnyData(postdata, channel)
                 logger.info(postdata)
                 if error_safety > safe_limit:
@@ -125,7 +125,7 @@ def runSearchGithubCode():
                 if error_safety != 0:
                   ec.setSafetyCount('github_code', 0)
                 if result != []:
-                  postdata = 'New Code Found about `' + key + '` at _github_code_'
+                  postdata = 'New Code Found about `' + key + '` in _github_code_'
                   master.postAnyData(postdata, channel)
                   master.postAnyData('\n'.join(result), channel)
                   logger.info('keyword : ' + key)
@@ -135,15 +135,15 @@ def runSearchGithubCode():
                   ec.addExcludeList('github_code', conf['Index'], exclude)
               time.sleep(10)
             else:
-              postdata = '`' + key + '` expired at _github_code_, and was disabled.'
+              postdata = '`' + key + '` expired in _github_code_, and was disabled.'
               logger.info(postdata)
               master.postAnyData(postdata, channel)
-              ec.enableCandidateSetting('github_code', conf['Index'], False)
+              ec.enableKeywordSetting('github_code', conf['Index'], False)
   except:
     logger.error('--ERROR HAS OCCURED IN GITHUB SEARCH--')
     logger.error(traceback.format_exc())
     master.postAnyData(traceback.format_exc(), slackbot_settings.channels[0])
-#    ec.enableCandidateSetting('github', conf['Index'], False)
+#    ec.enableKeywordSetting('github', conf['Index'], False)
 
 def runSearchGist():
   try:
@@ -173,7 +173,7 @@ def runSearchGist():
               if statuscode != 200:
                 error_safety += 1
                 ec.setSafetyCount('gist', error_safety)
-                postdata = '`' + key + '` failed to search at _gist_.\nStatus Code: ' + str(statuscode)
+                postdata = '`' + key + '` failed to search in _gist_.\nStatus Code: ' + str(statuscode)
                 master.postAnyData(postdata, channel)
                 logger.info(postdata)
                 if error_safety > safe_limit:
@@ -185,7 +185,7 @@ def runSearchGist():
                 if error_safety != 0:
                   ec.setSafetyCount('gist', 0)
                 if result != []:
-                  postdata = 'New Code Found about `' + key + '` at _gist_'
+                  postdata = 'New Code Found about `' + key + '` in _gist_'
                   master.postAnyData(postdata, channel)
                   master.postAnyData('\n'.join(result), channel)
                   logger.info('keyword : ' + key)
@@ -195,15 +195,15 @@ def runSearchGist():
                   ec.addExcludeList('gist', conf['Index'], exclude)
               time.sleep(45)
             else:
-              postdata = '`' + key + '` is expired at _gist_, and disabled.'
+              postdata = '`' + key + '` is expired in _gist_, and disabled.'
               master.postAnyData(postdata, channel)
-              ec.enableCandidateSetting('gist', conf['Index'], False)
+              ec.enableKeywordSetting('gist', conf['Index'], False)
               logger.info(postdata)
   except:
     logger.error('--ERROR HAS OCCURED IN GIST SEARCH--')
     logger.error(traceback.format_exc())
     master.postAnyData(traceback.format_exc(), slackbot_settings.channels[0])
-#    ec.enableCandidateSetting('gist', conf['Index'], False)
+#    ec.enableKeywordSetting('gist', conf['Index'], False)
 
 def runSearchGitlab():
   try:
@@ -231,7 +231,7 @@ def runSearchGitlab():
               if statuscode != 200:
                 error_safety += 1
                 ec.setSafetyCount('gitlab', error_safety)
-                postdata = '`' + key + '` failed to search at _gitlab_.\nStatus Code: ' + str(statuscode)
+                postdata = '`' + key + '` failed to search in _gitlab_.\nStatus Code: ' + str(statuscode)
                 master.postAnyData(postdata, channel)
                 logger.info(postdata)
                 if error_safety > safe_limit:
@@ -243,7 +243,7 @@ def runSearchGitlab():
                 if error_safety != 0:
                   ec.setSafetyCount('gitlab', 0)
                 if result != []:
-                  postdata = 'New Code Found about `' + key + '` at _gitlab_'
+                  postdata = 'New Code Found about `' + key + '` in _gitlab_'
                   master.postAnyData(postdata, channel)
                   url = []
                   for i in result:
@@ -256,15 +256,15 @@ def runSearchGitlab():
                   ec.addExcludeList('gitlab', conf['Index'], exclude)
               time.sleep(30)
             else:
-              postdata = '`' + key + '` is expired at _gitlab_, and disabled.'
+              postdata = '`' + key + '` is expired in _gitlab_, and disabled.'
               master.postAnyData(postdata, channel)
-              ec.enableCandidateSetting('gitlab', conf['Index'], False)
+              ec.enableKeywordSetting('gitlab', conf['Index'], False)
               logger.info(postdata)
   except:
     logger.error('--ERROR HAS OCCURED IN GITLAB SEARCH--')
     logger.error(traceback.format_exc())
     master.postAnyData(traceback.format_exc(), slackbot_settings.channels[0])
-#    ec.enableCandidateSetting('gitlab', conf[0], False)
+#    ec.enableKeywordSetting('gitlab', conf[0], False)
 
 def runSearchGitlabSnippets():
   try:
@@ -290,9 +290,9 @@ def runSearchGitlabSnippets():
             if now < limittime:
               keywords[key] = (conf['Index'], conf['Exclude_list'])
             else:
-              postdata = '`' + key + '` is expired at _gitlab_snippet_, and disabled.'
+              postdata = '`' + key + '` is expired in _gitlab_snippet_, and disabled.'
               master.postAnyData(postdata, channel)
-              ec.enableCandidateSetting('gitlab_snippet', conf['Index'], False)
+              ec.enableKeywordSetting('gitlab_snippet', conf['Index'], False)
               logger.info(postdata)
       if len(keywords.keys()) > 0:
         (results, statuscode) = search_api.searchGitlabSnippets(keywords.keys())
@@ -314,7 +314,7 @@ def runSearchGitlabSnippets():
             if word in results.keys():
               result = list(set(results[word]) - set(keywords[word][1]))
               if result != []:
-                postdata = 'New Code Found about `' + word + '` at _gitlab_snippet_'
+                postdata = 'New Code Found about `' + word + '` in _gitlab_snippet_'
                 master.postAnyData(postdata, channel)
                 logger.info(postdata)
                 url = []
@@ -330,7 +330,7 @@ def runSearchGitlabSnippets():
     logger.error('--ERROR HAS OCCURED IN GITLAB SNIPPETS SEARCH--')
     logger.error(traceback.format_exc())
     master.postAnyData(traceback.format_exc(), slackbot_settings.channels[0])
-#    ec.enableCandidateSetting('gitlab_snippet', conf['Index'], False)
+#    ec.enableKeywordSetting('gitlab_snippet', conf['Index'], False)
 
 def runSearchPastebin():
   try:
@@ -356,16 +356,16 @@ def runSearchPastebin():
             if now < limittime:
               keywords[key] = (conf['Index'], conf['Exclude_list'])
             else:
-              postdata = '`' + key + '` is expired at _pastebin_, and disabled.'
+              postdata = '`' + key + '` is expired in _pastebin_, and disabled.'
               master.postAnyData(postdata, channel)
-              ec.enableCandidateSetting('pastebin', conf['Index'], False)
+              ec.enableKeywordSetting('pastebin', conf['Index'], False)
               logger.info(postdata)
       if len(keywords.keys()) > 0:
         (results, statuscode) = search_api.searchPastebinRecent(keywords.keys())
         if statuscode != 200:
           error_safety += 1
           ec.setSafetyCount('pastebin', error_safety)
-          postdata = 'pastebin serach failed at _pastebin_.\nStatus Code: ' + str(statuscode)
+          postdata = 'pastebin serach failed in _pastebin_.\nStatus Code: ' + str(statuscode)
           master.postAnyData(postdata, channel)
           logger.info(postdata)
           if error_safety > safe_limit:
@@ -380,7 +380,7 @@ def runSearchPastebin():
             if word in results.keys():
               result = list(set(results[word]) - set(keywords[word][1]))
               if result != []:
-                postdata = 'New Code Found about `' + word + '` at _pastebin_'
+                postdata = 'New Code Found about `' + word + '` in _pastebin_'
                 master.postAnyData(postdata, channel)
                 logger.info(postdata)
                 exclude = results[word]
@@ -391,7 +391,7 @@ def runSearchPastebin():
     logger.error('--ERROR HAS OCCURED IN PASTEBIN SEARCH--')
     logger.error(traceback.format_exc())
     master.postAnyData(traceback.format_exc(), slackbot_settings.channels[0])
-#    ec.enableCandidateSetting('pastebin', conf['Index'], False)
+#    ec.enableKeywordSetting('pastebin', conf['Index'], False)
 
 def runSearchGoogleCustom():
   try:
@@ -421,7 +421,7 @@ def runSearchGoogleCustom():
               if statuscode != 200:
                 error_safety += 1
                 ec.setSafetyCount('google_custom', error_safety)
-                postdata = '`' + key + '` failed to search at _google_custom_.\nStatus Code: ' + str(statuscode)
+                postdata = '`' + key + '` failed to search in _google_custom_.\nStatus Code: ' + str(statuscode)
                 master.postAnyData(postdata, channel)
                 logger.info(postdata)
                 if error_safety > safe_limit:
@@ -433,7 +433,7 @@ def runSearchGoogleCustom():
                 if error_safety != 0:
                   ec.setSafetyCount('google_custom', 0)
                 if result_post != []:
-                  postdata = 'New Code Found about `' + key + '` at _google_custom_'
+                  postdata = 'New Code Found about `' + key + '` in _google_custom_'
                   master.postAnyData(postdata, channel)
                   logger.info(postdata)
                   for i in result_post:
@@ -446,15 +446,15 @@ def runSearchGoogleCustom():
                   ec.addExcludeList('google_custom', conf['Index'], exclude)
               time.sleep(30)
             else:
-              postdata = '`' + key + '` is expired at _google_custom_, and disabled.'
+              postdata = '`' + key + '` is expired in _google_custom_, and disabled.'
               master.postAnyData(postdata, channel)
-              ec.enableCandidateSetting('google_custom', conf['Index'], False)
+              ec.enableKeywordSetting('google_custom', conf['Index'], False)
               logger.info(postdata)
   except:
     logger.error('--ERROR HAS OCCURED IN GOOGLE CUSTOM SEARCH--')
     logger.error(traceback.format_exc())
     master.postAnyData(traceback.format_exc(), slackbot_settings.channels[0])
-#    ec.enableCandidateSetting('google_custom', conf['Index'], False)
+#    ec.enableKeywordSetting('google_custom', conf['Index'], False)
 
 def runBot():
   bot = Bot()

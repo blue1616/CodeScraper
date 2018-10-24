@@ -6,7 +6,7 @@ import re
 import os.path
 
 base = os.path.dirname(os.path.abspath(__file__))
-confjson = os.path.normpath(os.path.join(base, '../settings/searchCandidate.json'))
+confjson = os.path.normpath(os.path.join(base, '../settings/searchKeyword.json'))
 channelfile = os.path.normpath(os.path.join(base, '../settings/channellist'))
 
 modules = [
@@ -183,7 +183,7 @@ def backupConfig():
   shutil.copyfile(confjson, backupfile)
   time.sleep(3)
 
-def setNewCandidate(target, word):
+def setNewKeyword(target, word):
   if target in modules:
     keyword = 'keyword_' + target
     conffile = open(confjson, 'r+')
@@ -220,7 +220,7 @@ def setNewCandidate(target, word):
   else:
     return None
 
-def enableCandidateSetting(target, index, enable):
+def enableKeywordSetting(target, index, enable):
   if target in modules:
     keyword = 'keyword_' + target
     conffile = open(confjson, 'r+')
@@ -402,7 +402,7 @@ def clearExcludeList(target, index):
   else:
     return None
 
-def getCandidatelist(target):
+def getKeywordlist(target):
   if target in modules:
     keyword = 'keyword_' + target
     conffile = open(confjson, 'r')
@@ -415,7 +415,7 @@ def getCandidatelist(target):
     return alllist
   return None
 
-def getEnableCandidatelist(target):
+def getEnableKeywordlist(target):
   if target in modules:
     keyword = 'keyword_' + target
     conffile = open(confjson, 'r')
@@ -430,7 +430,7 @@ def getEnableCandidatelist(target):
   else:
     return None
 
-def getCandidateSetting(target, index):
+def getKeywordSetting(target, index):
   if target in modules:
     keyword = 'keyword_' + target
     conffile = open(confjson, 'r')

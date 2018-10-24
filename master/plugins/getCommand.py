@@ -19,9 +19,9 @@ targets = [
 def getPostData(keyword, index, target):
   post_data = ''
   if index > 0:
-    post_data = 'Set New Search Candidate : `{keyword}` (index : {index}) to _{target}_'.format(keyword=keyword, index=abs(index), target=target)
+    post_data = 'Set New Search Keyword : `{keyword}` (index : {index}) in _{target}_'.format(keyword=keyword, index=abs(index), target=target)
   elif index < 0:
-    post_data = 'Initialize Search Candidate : `{keyword}` (index : {index}) in _{target}_'.format(keyword=keyword, index=abs(index), target=target)
+    post_data = 'Initialize Search Keyword : `{keyword}` (index : {index}) in _{target}_'.format(keyword=keyword, index=abs(index), target=target)
   else:
     post_data = 'Error has Occured'
   return post_data
@@ -34,9 +34,9 @@ def getEnabledTargets():
       etargets.append(name)
   return etargets
 
-@respond_to('setSearchCandidate: (.*)')
-@respond_to('setSC: (.*)')
-def setSearchCandidate(message, params):
+@respond_to('setKeyword: (.*)')
+@respond_to('setK: (.*)')
+def setKeyword(message, params):
   target = ''
   enabled = getEnabledTargets()
   targets.append('all')
@@ -59,12 +59,12 @@ def setSearchCandidate(message, params):
         'gitlab'
       ]
       if target in enabled:
-        ret = ec.setNewCandidate(target, word)
+        ret = ec.setNewKeyword(target, word)
         post_data = getPostData(word, ret, target)
       elif target == 'all':
         enabled = list(set(enabled) & set(setter))
         for s in enabled:
-          ret = ec.setNewCandidate(s, word)
+          ret = ec.setNewKeyword(s, word)
           if ret != 0:
             if post_data != '':
               post_data += '\n'
@@ -77,9 +77,9 @@ def setSearchCandidate(message, params):
     as_user=True,
     )
 
-@respond_to('disableSearchCandidate: (.*)')
-@respond_to('disableSC: (.*)')
-def disableSearchCandidate(message, params):
+@respond_to('disableKeyword: (.*)')
+@respond_to('disableK: (.*)')
+def disableKeyword(message, params):
   target = ''
   enabled = getEnabledTargets()
   for t in targets:
@@ -91,7 +91,7 @@ def disableSearchCandidate(message, params):
     params = params.split(';')[0]
     if params.strip().isdigit():
       index = int(params.strip())
-      ret = ec.enableCandidateSetting(target, index, False)
+      ret = ec.enableKeywordSetting(target, index, False)
       if ret == None:
         post_data = 'No Data'
       else:
@@ -106,9 +106,9 @@ def disableSearchCandidate(message, params):
     as_user=True,
     )
 
-@respond_to('enableSearchCandidate: (.*)')
-@respond_to('enableSC: (.*)')
-def enableSearchCandidate(message, params):
+@respond_to('enableKeyword: (.*)')
+@respond_to('enableK: (.*)')
+def enableKeyword(message, params):
   target = 'github'
   enabled = getEnabledTargets()
   for t in targets:
@@ -120,7 +120,7 @@ def enableSearchCandidate(message, params):
     params = params.split(';')[0]
     if params.strip().isdigit():
       index = int(params.strip())
-      ret = ec.enableCandidateSetting(target, index, True)
+      ret = ec.enableKeywordSetting(target, index, True)
       if ret == None:
         post_data = 'No Data'
       else:
@@ -188,7 +188,7 @@ def setSearchTimeRange(message, params):
   words = params.strip().split(';')
   valid_targets = [
     'github',
-    'github_code'
+    'gist'
   ]
   if target in valid_targets and target in enabled:
     if words[0].strip().isdigit():
@@ -199,7 +199,7 @@ def setSearchTimeRange(message, params):
           if ret == '':
             post_data = 'No Data'
           else:
-            post_data = '`{keyword}` serach at _{target}_ in last {range}'.format(keyword=ret, target=target, range=words[1].strip())
+            post_data = '`{keyword}` serach in _{target}_ in last {range} days'.format(keyword=ret, target=target, range=words[1].strip())
       else:
         post_data = 'Parameter Shortage'
     else:
@@ -232,7 +232,7 @@ def setExpireDate(message, params):
           if ret == '':
             post_data = 'No Data'
           else:
-            post_data = '`{keyword}` at _{target}_ will expire in {date}'.format(keyword=ret, target=target, date=words[1].strip())
+            post_data = '`{keyword}` in _{target}_ will expire at {date}'.format(keyword=ret, target=target, date=words[1].strip())
         else:
           post_data = 'Parameter Pattern not Match'
       else:
@@ -274,7 +274,7 @@ def setChannel(message, params):
           if ret == '':
             post_data = 'No Data'
           else:
-            post_data = '`{keyword}` result at _{target}_ will notify in {channel}'.format(keyword=ret, target=target, channel=words[1].strip())
+            post_data = '`{keyword}` result in _{target}_ will notify at {channel}'.format(keyword=ret, target=target, channel=words[1].strip())
         else:
           post_data = 'Parameter Pattern not Match'
       else:
@@ -318,7 +318,7 @@ def addExcludeList(message, params):
               post_data = 'No Data'
               break
             else:
-              post_data = 'Add {words} in Exclude List of `{keyword}` at _{target}_'.format(words=','.join(words[1:]), keyword=ret, target=target)
+              post_data = 'Add {words} in Exclude List of `{keyword}` in _{target}_'.format(words=','.join(words[1:]), keyword=ret, target=target)
           else:
             post_data = 'No Data'
       else:
@@ -358,7 +358,7 @@ def clearExcludeList(message, params):
       if ret == None:
         post_data = 'No Data'
       else:
-        post_data = 'Delete All Exclude List of `{keyword}` at _{target}_'.format(keyword=ret, target= target)
+        post_data = 'Delete All Exclude List of `{keyword}` in _{target}_'.format(keyword=ret, target= target)
     else:
       post_data = 'Please Put Index of the Word'
   else:
@@ -369,9 +369,9 @@ def clearExcludeList(message, params):
     as_user=True,
     )
 
-@respond_to('getSearchCandidate: (.*)')
-@respond_to('getSC: (.*)')
-def getSearchCandidate(message, params):
+@respond_to('getKeyword: (.*)')
+@respond_to('getK: (.*)')
+def getKeyword(message, params):
   post_data = ''
   target = 'all'
   targets.append('all')
@@ -384,9 +384,9 @@ def getSearchCandidate(message, params):
   if target in enabled or target == 'all':
     for g in enabled:
       if target == g or target == 'all':
-        candidatelist = ec.getEnableCandidatelist(g)
+        candidatelist = ec.getEnableKeywordlist(g)
         if len(candidatelist.keys()) != 0:
-          post_data += '-- Enabled Search Candidate at _{target}_ --\n'.format(target=g)
+          post_data += '-- Enabled Search Keyword in _{target}_ --\n'.format(target=g)
           for k,v in sorted(candidatelist.items(), key=lambda x: x[1]):
             post_data += str(v) + ' : `' + k + '`\n'
   else:
@@ -397,9 +397,9 @@ def getSearchCandidate(message, params):
     as_user=True,
     )
 
-@respond_to('getAllSearchCandidate: (.*)')
-@respond_to('getAllSC: (.*)')
-def getAllSearchCandidate(message, params):
+@respond_to('getAllKeyword: (.*)')
+@respond_to('getAllK: (.*)')
+def getAllKeyword(message, params):
   post_data = ''
   target = 'all'
   targets.append('all')
@@ -412,9 +412,9 @@ def getAllSearchCandidate(message, params):
   if target in enabled or target == 'all':
     for g in enabled:
       if target == g or target == 'all':
-        candidatelist = ec.getCandidatelist(g)
+        candidatelist = ec.getKeywordlist(g)
         if len(candidatelist.keys()) != 0:
-          post_data += '-- Enabled Search Candidate at _{target}_ --\n'.format(target=g)
+          post_data += '-- Enabled Search Keyword in _{target}_ --\n'.format(target=g)
           for k,v in sorted(candidatelist.items(), key=lambda x: x[1]):
             post_data += str(v) + ' : `' + k + '`\n'
   else:
@@ -427,7 +427,7 @@ def getAllSearchCandidate(message, params):
 
 @respond_to('getSearchSetting: (.*)')
 @respond_to('getSS: (.*)')
-def getSearchCandidateSetting(message, params):
+def getKeywordSetting(message, params):
   post_data = ''
   for t in targets:
     if params.strip().startswith(t + ';'):
@@ -439,7 +439,7 @@ def getSearchCandidateSetting(message, params):
   if target in enabled:
     if params.strip().isdigit():
       index = int(params.strip())
-      (config, keyword) = ec.getCandidateSetting(target, index)
+      (config, keyword) = ec.getKeywordSetting(target, index)
       if keyword == '':
         post_data = 'No Data'
       else:
@@ -487,7 +487,7 @@ def reMatchTest(message, params):
     if words[0].strip().isdigit():
       index = int(words[0].strip())
       if len(words) > 1:
-        candidatelist = ec.getCandidatelist(target)
+        candidatelist = ec.getKeywordlist(target)
         if index in candidatelist.values():
           key = ''
           for k,v in candidatelist.items():
@@ -529,30 +529,30 @@ def reMatchTest(message, params):
     )
 
 @respond_to('help:')
-def getAllSearchCandidate(message):
-#  candidatelist = setting.getCandidatelist()
+def getAllKeyword(message):
+#  candidatelist = setting.getKeywordlist()
   post_data = '''```Command Format is Following:
 \t{Command}: {target}; {arg1}; {args}; ...
 
 Command List:
 
-\'setSearchCandidate: target; [word]\'\tAdd [word] as New Search Candidate with Default Settings.
- (abbreviation=setSC:)
-\'enableSearchCandidate: target; [index]\'\tEnable the Search Candidate indicated by [index].
- (abbreviation=enableSC:)
-\'disableSearchCandidate: target; [index]\'\tDisable the Search Candidate indicated by [index].
- (abbreviation=disableSC:)
+\'setKeyword: target; [word]\'\tAdd [word] as New Search Keyword with Default Settings.
+ (abbreviation=setK:)
+\'enableKeyword: target; [index]\'\tEnable the Search Keyword indicated by [index].
+ (abbreviation=enableK:)
+\'disableKeyword: target; [index]\'\tDisable the Search Keyword indicated by [index].
+ (abbreviation=disableK:)
 \'setSearchLevel: target; [index]\'\tSet Search Level of Github Search (1:easily 2:) indicated by [index]. It is used in github and github_code.
  (abbreviation=setSL:)
-\'setExpireDate: target; [index]; [expiration date]\'\tSet a Expiration Date of the Candidate indicated by [index]. [expiration date] Format is YYYY-mm-dd.
+\'setExpireDate: target; [index]; [expiration date]\'\tSet a Expiration Date of the Keyword indicated by [index]. [expiration date] Format is YYYY-mm-dd.
  (abbreviation=setED:)
-\'setChannel: target; [index];[channel]\'\tSet channel to notify the Search Candidate\'s result.
+\'setChannel: target; [index];[channel]\'\tSet channel to notify the Search Keyword\'s result.
  (abbreviation=setC:)
-\'getSearchCandidate: target;\'\tListing Enabled Search Candidates.
- (abbreviation=getSC:)
-\'getAllSearchCandidate: target;\'\tListing All Search Candidate (include Disabled Candidates).
- (abbreviation=getAllSC:)
-\'getSearchSetting: target; [index]\'\tShow Setting of the Search Candidate indicated by [index].
+\'getKeyword: target;\'\tListing Enabled Search Keywords.
+ (abbreviation=getK:)
+\'getAllKeyword: target;\'\tListing All Search Keyword (include Disabled Keywords).
+ (abbreviation=getAllK:)
+\'getSearchSetting: target; [index]\'\tShow Setting of the Search Keyword indicated by [index].
  (abbreviation=getSS:)
 \'help:\'\tShow this Message.
 
