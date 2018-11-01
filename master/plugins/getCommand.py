@@ -532,7 +532,7 @@ def reMatchTest(message, params):
 def getAllKeyword(message):
 #  candidatelist = setting.getKeywordlist()
   post_data = '''```Command Format is Following:
-\t{Command}: {target}; {arg1}; {args}; ...
+\t{Command}: {target}; {arg1}; {arg2}; ...
 
 Command List:
 

@@ -18,7 +18,7 @@ channels = [
   "codescraper",
   "test_channel"]
 
-# Default Setting of Search Candidates
+# Default Setting of Search Keywords
 # You should change 'channel' name to one of the above
 github_default_settings = {
   'Enable':True,
@@ -26,7 +26,7 @@ github_default_settings = {
   'Time_Range':2,
   'Expire_date':180,
   'Exclude_list':[],
-  'Channel':'codescraper' # You should change it
+  'Channel':'codescraper'
 }
 
 gist_default_settings = {
@@ -34,7 +34,7 @@ gist_default_settings = {
   'Time_Range':2,
   'Expire_date':180,
   'Exclude_list':[],
-  'Channel':'codescraper' # You should change it
+  'Channel':'codescraper'
 }
 
 github_code_default_settings = {
@@ -42,35 +42,35 @@ github_code_default_settings = {
   'SearchLevel':2,
   'Expire_date':180,
   'Exclude_list':[],
-  'Channel':'codescraper' # You should change it
+  'Channel':'codescraper'
 }
 
 gitlab_default_settings = {
   'Enable':True,
   'Expire_date':180,
   'Exclude_list':[],
-  'Channel':'codescraper' # You should change it
+  'Channel':'codescraper'
 }
 
 gitlab_snippet_default_settings = {
   'Enable':True,
   'Expire_date':180,
   'Exclude_list':[],
-  'Channel':'codescraper' # You should change it
+  'Channel':'codescraper'
 }
 
 pastebin_default_settings = {
   'Enable':True,
   'Expire_date':180,
   'Exclude_list':[],
-  'Channel':'codescraper' # You should change it
+  'Channel':'codescraper'
 }
 
 google_custom_default_settings = {
   'Enable':True,
   'Expire_date':180,
   'Exclude_list':[],
-  'Channel':'codescraper' # You should change it
+  'Channel':'codescraper'
 }
 
 # github_access_token is required for searching github_code (not needed for github and gist search)
@@ -85,13 +85,13 @@ google_custom_search_engine_id = 'XXXXXXXXXXXXXXXXXXXXX:XXXXXXXXXXX'
 
 # Enable Modules
 enable_github_search = True
-enable_github_code_search = True
+enable_github_code_search = False
 enable_gist_search = True
 enable_gitlab_search = True
-enable_gitlab_snippet_search = True
+enable_gitlab_snippet_search = False
 # Pastebin Search is required pro account and to ask pastebin to whitelist your IP
 enable_pastebin_search = False
-enable_google_custom_search = True
+enable_google_custom_search = False
 
 # Interval (Write in Crontab Format)
 github_search_interval = "28 */1 * * *"
