@@ -168,6 +168,12 @@ Slackボットに対してコマンドを送ることで、キーワードを登
 登録されたキーワードには Index が振られます。設定の変更には Index を指定します。
 各キーワードの Index はキーワードの登録時、もしくは getKeyword: コマンドによって知ることができます。
 
+![CodeScraper-1](img/codescraper-1.png)
+
+Github 新しいリポジトリを見つけた際の通知
+
+![CodeScraper-2](img/codescraper-2.png)
+
 ### 注意点
 - Pastebin
   - Pastebin PRO Account（有償）が必要です

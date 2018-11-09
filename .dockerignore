@@ -1,2 +1,6 @@
-**
-!requirements
+.git/
+master/__pycache__
+master/plugins/__pycache__
+img/*
+LICENSE
+README*

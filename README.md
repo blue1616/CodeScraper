@@ -167,6 +167,12 @@ See 'help:' command for specific usage.
 The index is assigned to each search keywords. To change the setting, specify the index.
 The index of each keyword can be known by keyword registration or by 'getKeyword:' command.
 
+![CodeScraper-1](img/codescraper-1.png)
+
+Notification on finding Github new repository
+
+![CodeScraper-2](img/codescraper-2.png)
+
 ### Notices
 - Pastebin
   - Pastebin PRO Account（Paid Account） is required.

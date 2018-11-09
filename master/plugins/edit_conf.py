@@ -465,3 +465,18 @@ def setSafetyCount(target, count):
     return True
   else:
     return None
+
+def setSearchedPastes(pastelist):
+  keyword = 'keyword_pastebin'
+  conffile = open(confjson, 'r+')
+  searchconf = json.load(conffile)
+  if keyword in searchconf.keys():
+    searchconf[keyword]['__SEARCHEDPASTES__'] = list(pastelist)
+  else:
+    conffile.close()
+    return False
+  conffile.seek(0)
+  conffile.write(json.dumps(searchconf, indent=2))
+  conffile.truncate()
+  conffile.close()
+  return True

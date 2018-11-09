@@ -333,65 +333,92 @@ def runSearchGitlabSnippets():
 #    ec.enableKeywordSetting('gitlab_snippet', conf['Index'], False)
 
 def runSearchPastebin():
-  try:
-    logger.info('--START PASTEBIN SEARCH--')
-    now = datetime.date.today()
-    today = now.strftime('%Y-%m-%d')
-    conffile = open(configfile, 'r')
-    searchconf = json.load(conffile)
-    conffile.close()
-    keywords = {}
-    channel = ''
+  logger.info('--START PASTEBIN SEARCH--')
+  while True:
+    try:
+      now = datetime.date.today()
+      today = now.strftime('%Y-%m-%d')
+      conffile = open(configfile, 'r')
+      searchconf = json.load(conffile)
+      conffile.close()
+      keywords = {}
+      channel = ''
 
-    if 'keyword_pastebin' in searchconf.keys() and '__DEFAULT_SETTING__' in searchconf['keyword_pastebin'].keys() and searchconf['keyword_pastebin']['__DEFAULT_SETTING__']['Index'] == 0:
-      safe_limit = 3
-      error_safety = 0
-      if '__SAFETY__' in searchconf['keyword_pastebin']['__DEFAULT_SETTING__'].keys():
-        error_safety = searchconf['keyword_pastebin']['__DEFAULT_SETTING__']['__SAFETY__']
-      for key, conf in searchconf['keyword_pastebin'].items():
-        if conf['Index'] != 0:
-          limittime = datetime.datetime.strptime(conf['Expire_date'], '%Y-%m-%d').date()
-          if conf['Enable'] == True:
-            channel = conf['Channel']
-            if now < limittime:
-              keywords[key] = (conf['Index'], conf['Exclude_list'])
-            else:
-              postdata = '`' + key + '` is expired in _pastebin_, and disabled.'
-              master.postAnyData(postdata, channel)
-              ec.enableKeywordSetting('pastebin', conf['Index'], False)
-              logger.info(postdata)
-      if len(keywords.keys()) > 0:
-        (results, statuscode) = search_api.searchPastebinRecent(keywords.keys())
-        if statuscode != 200:
-          error_safety += 1
-          ec.setSafetyCount('pastebin', error_safety)
-          postdata = 'pastebin serach failed in _pastebin_.\nStatus Code: ' + str(statuscode)
-          master.postAnyData(postdata, channel)
-          logger.info(postdata)
-          if error_safety > safe_limit:
-            postdata = 'Too Many Errors. _Pastebin_ Module is disabled for safety'
-            ec.disable('pastebin')
+      if 'keyword_pastebin' in searchconf.keys() and '__DEFAULT_SETTING__' in searchconf['keyword_pastebin'].keys() and searchconf['keyword_pastebin']['__DEFAULT_SETTING__']['Index'] == 0:
+        safe_limit = 6
+        error_safety = 0
+        if '__SAFETY__' in searchconf['keyword_pastebin']['__DEFAULT_SETTING__'].keys():
+          error_safety = searchconf['keyword_pastebin']['__DEFAULT_SETTING__']['__SAFETY__']
+        for key, conf in searchconf['keyword_pastebin'].items():
+          if type(conf) == dict and conf['Index'] > 0:
+            limittime = datetime.datetime.strptime(conf['Expire_date'], '%Y-%m-%d').date()
+            if conf['Enable'] == True:
+              channel = conf['Channel']
+              if now < limittime:
+                keywords[key] = conf
+              else:
+                postdata = '`' + key + '` is expired in _pastebin_, and disabled.'
+                master.postAnyData(postdata, channel)
+                ec.enableKeywordSetting('pastebin', conf['Index'], False)
+                logger.info(postdata)
+        if len(keywords.keys()) > 0:
+          (pastelist, statuscode) = search_api.getPasteList(100)
+          if statuscode != 200:
+            error_safety += 1
+            ec.setSafetyCount('pastebin', error_safety)
+            postdata = 'pastebin serach failed in _pastebin_.\nStatus Code: ' + str(statuscode)
             master.postAnyData(postdata, channel)
             logger.info(postdata)
-        else:
-          if error_safety != 0:
-            ec.setSafetyCount('pastebin', 0)
-          for word in keywords.keys():
-            if word in results.keys():
-              result = list(set(results[word]) - set(keywords[word][1]))
-              if result != []:
-                postdata = 'New Code Found about `' + word + '` in _pastebin_'
+            if error_safety > safe_limit:
+              postdata = 'Too Many Errors. _Pastebin_ Module is disabled for safety'
+              ec.disable('pastebin')
+              master.postAnyData(postdata, channel)
+              logger.info(postdata)
+          else:
+            if '__SEARCHEDPASTES__' in searchconf['keyword_pastebin'].keys():
+              searchedpastes = searchconf['keyword_pastebin']['__SEARCHEDPASTES__']
+            else:
+              searchedpastes = []
+            searchlist = {}
+            for paste, conf in pastelist.items():
+              if not paste in searchedpastes:
+                searchlist[paste] = conf
+            if len(searchlist.keys()) > 30:
+              ec.setSearchedPastes(pastelist.keys())
+              logger.info('The number of scraping pastes is ' + str(len(searchlist.keys())))
+              (results, statuscode) = search_api.scrapePastebin(keywords.keys(), searchlist)
+              if statuscode != 200:
+                error_safety += 1
+                ec.setSafetyCount('pastebin', error_safety)
+                postdata = 'pastebin serach failed in _pastebin_.\nStatus Code: ' + str(statuscode)
                 master.postAnyData(postdata, channel)
                 logger.info(postdata)
-                exclude = results[word]
-                master.postAnyData('\n'.join(result), channel)
-                ec.clearExcludeList('pastebin', conf['Index'])
-                ec.addExcludeList('pastebin', keywords[word][0], exclude)
-  except:
-    logger.error('--ERROR HAS OCCURED IN PASTEBIN SEARCH--')
-    logger.error(traceback.format_exc())
-    master.postAnyData(traceback.format_exc(), slackbot_settings.channels[0])
-#    ec.enableKeywordSetting('pastebin', conf['Index'], False)
+                if error_safety > safe_limit:
+                  postdata = 'Too Many Errors. _Pastebin_ Module is disabled for safety'
+                  ec.disable('pastebin')
+                  master.postAnyData(postdata, channel)
+                  logger.info(postdata)
+              else:
+                if error_safety != 0:
+                  ec.setSafetyCount('pastebin', 0)
+                for word in keywords.keys():
+                  if word in results.keys():
+                    result = list(set(results[word]) - set(keywords[word]['Exclude_list']))
+                    if result != []:
+                      postdata = 'New Code Found about `' + word + '` in _pastebin_'
+                      master.postAnyData(postdata, channel)
+                      logger.info(postdata)
+                      exclude = results[word]
+                      master.postAnyData('\n'.join(result), channel)
+                      ec.clearExcludeList('pastebin', keywords[word]['Index'])
+                      ec.addExcludeList('pastebin', keywords[word]['Index'], exclude)
+      time.sleep(10)
+    except:
+      logger.error('--ERROR HAS OCCURED IN PASTEBIN SEARCH--')
+      logger.error(traceback.format_exc())
+      master.postAnyData(traceback.format_exc(), slackbot_settings.channels[0])
+      return False
+  #    ec.enableKeywordSetting('pastebin', conf['Index'], False)
 
 def runSearchGoogleCustom():
   try:
@@ -442,7 +469,7 @@ def runSearchGoogleCustom():
                     master.postAnyData(post_code, channel)
 #                  exclude = list(set(result.keys()) & set(conf['Exclude_list']))
                   exclude = result.keys()
-                  ec.clearExcludeList('google_custom', conf['Index'])
+#                  ec.clearExcludeList('google_custom', conf['Index'])
                   ec.addExcludeList('google_custom', conf['Index'], exclude)
               time.sleep(30)
             else:
@@ -472,6 +499,7 @@ class JobConfig(object):
   def next(self):
     crontab = self._crontab
     return math.ceil(crontab.next())
+
 def job_controller(jobConfig):
   while True:
     try:
@@ -490,6 +518,7 @@ def main():
     print('Slackbot API TOKEN is required')
 
   start_state = []
+  runpastebinflag = False
 
   try:
     channels = slackbot_settings.channels
@@ -580,8 +609,7 @@ def main():
       default_pastebin = slackbot_settings.pastebin_default_settings
       ret = ec.setDefaultSettings('pastebin', default_pastebin, channels)
       if ret:
-        pastebin_snippet_interval = slackbot_settings.pastebin_search_interval
-        jobConfigs.append(JobConfig(CronTab(pastebin_snippet_interval), runSearchPastebin))
+        runpastebinflag = True
         message = 'Started'
         start_state.append(('pastebin', 'SUCCESS', message))
       else:
@@ -618,9 +646,14 @@ def main():
   master.postAnyData(postdata, channels[0])
   print(postdata)
 
-  p = Pool(len(jobConfigs) + 1)
+  if runpastebinflag:
+    p = Pool(len(jobConfigs) + 2)
+  else:
+    p = Pool(len(jobConfigs) + 1)
   try:
     p.apply_async(runBot)
+    if runpastebinflag:
+      p.apply_async(runSearchPastebin)
     p.map(job_controller, jobConfigs)
   except KeyboardInterrupt:
     pass

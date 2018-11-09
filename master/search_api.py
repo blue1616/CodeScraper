@@ -117,33 +117,40 @@ def searchGitlabSnippets(words):
       time.sleep(10)
   return codes, statuscode # dict, int
 
-def searchPastebinRecent(words):
-  url = 'https://scrape.pastebin.com/api_scraping.php?limit=30'
+def getPasteList(limit):
+  url = 'https://scrape.pastebin.com/api_scraping.php?limit=' + str(limit)
   result = requests.get(url)
   statuscode = result.status_code
   items = {}
-  codes = {}
   if statuscode == 200:
     try:
       scrape = result.json()
       for item in scrape:
         items[item["full_url"]] = [item["title"], item["scrape_url"]]
-      for k,v in items.items():
-        raw_result = requests.get(v[1])
-        if raw_result.status_code == 200:
-          for word in words:
-            patt = re.compile(word, re.IGNORECASE)
-            if re.search(patt, v[0]) or re.search(patt, raw_result.text):
-              if word in codes.keys():
-                codes[word].append(k)
-              else:
-                codes[word] = [k]
-        else:
-          statuscode = raw_result.status_code
-          break
-        time.sleep(1.5)
     except:
       return {}, -1
+  return items, statuscode # dict, int
+
+def scrapePastebin(words, items):
+  codes = {}
+  statuscode = -1
+  try:
+    for k,v in items.items():
+      raw_result = requests.get(v[1])
+      statuscode = raw_result.status_code
+      if statuscode == 200:
+        for word in words:
+          patt = re.compile(word, re.IGNORECASE)
+          if re.search(patt, v[0]) or re.search(patt, raw_result.text):
+            if word in codes.keys():
+              codes[word].append(k)
+            else:
+              codes[word] = [k]
+      else:
+        break
+      time.sleep(1.5)
+  except:
+    return {}, -1
   return codes, statuscode # dict, int
 
 def googleCustomSearch(word, engine_id, api_key):
