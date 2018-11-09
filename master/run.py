@@ -375,8 +375,8 @@ def runSearchPastebin():
               master.postAnyData(postdata, channel)
               logger.info(postdata)
           else:
-            if '__SEARCHEDPASTES__' in searchconf['keyword_pastebin'].keys():
-              searchedpastes = searchconf['keyword_pastebin']['__SEARCHEDPASTES__']
+            if '__SEARCHEDPASTES__' in searchconf['keyword_pastebin']['__DEFAULT_SETTING__'].keys():
+              searchedpastes = searchconf['keyword_pastebin']['__DEFAULT_SETTING__']['__SEARCHEDPASTES__']
             else:
               searchedpastes = []
             searchlist = {}
@@ -417,7 +417,7 @@ def runSearchPastebin():
       logger.error('--ERROR HAS OCCURED IN PASTEBIN SEARCH--')
       logger.error(traceback.format_exc())
       master.postAnyData(traceback.format_exc(), slackbot_settings.channels[0])
-      return False
+      time.sleep(10)
   #    ec.enableKeywordSetting('pastebin', conf['Index'], False)
 
 def runSearchGoogleCustom():

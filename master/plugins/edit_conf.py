@@ -470,8 +470,8 @@ def setSearchedPastes(pastelist):
   keyword = 'keyword_pastebin'
   conffile = open(confjson, 'r+')
   searchconf = json.load(conffile)
-  if keyword in searchconf.keys():
-    searchconf[keyword]['__SEARCHEDPASTES__'] = list(pastelist)
+  if keyword in searchconf.keys() and '__DEFAULT_SETTING__' in searchconf[keyword].keys():
+    searchconf[keyword]['__DEFAULT_SETTING__']['__SEARCHEDPASTES__'] = list(pastelist)
   else:
     conffile.close()
     return False
