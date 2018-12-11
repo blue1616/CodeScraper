@@ -1,4 +1,4 @@
-iversion: "2"
+version: "2"
 services:
   codescraper:
     image: codescraper:alpine
