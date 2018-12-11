@@ -18,59 +18,62 @@ channels = [
   "codescraper",
   "test_channel"]
 
-# Default Setting of Search Keywords
 # You should change 'channel' name to one of the above
+github_default_channel = channels[0]
+gist_default_channel = channels[0]
+github_code_default_channel = channels[0]
+gitlab_default_channel = channels[0]
+gitlab_snippet_default_channel = channels[0]
+pastebin_default_channel = channels[0]
+google_custom_default_channel = channels[0]
+rss_feed_default_channel = channels[0]
+twitter_default_channel = channels[0]
+
+# Default Setting of Search Keywords
 github_default_settings = {
   'Enable':True,
   'SearchLevel':2,
   'Time_Range':2,
   'Expire_date':180,
-  'Exclude_list':[],
-  'Channel':'codescraper'
+  'Channel': github_default_channel
 }
 
 gist_default_settings = {
   'Enable':True,
   'Time_Range':2,
   'Expire_date':180,
-  'Exclude_list':[],
-  'Channel':'codescraper'
+  'Channel':gist_default_channel
 }
 
 github_code_default_settings = {
   'Enable':True,
   'SearchLevel':2,
   'Expire_date':180,
-  'Exclude_list':[],
-  'Channel':'codescraper'
+  'Channel':github_code_default_channel
 }
 
 gitlab_default_settings = {
   'Enable':True,
   'Expire_date':180,
-  'Exclude_list':[],
-  'Channel':'codescraper'
+  'Channel':gitlab_default_channel
 }
 
 gitlab_snippet_default_settings = {
   'Enable':True,
   'Expire_date':180,
-  'Exclude_list':[],
-  'Channel':'codescraper'
+  'Channel':gitlab_snippet_default_channel
 }
 
 pastebin_default_settings = {
   'Enable':True,
   'Expire_date':180,
-  'Exclude_list':[],
-  'Channel':'codescraper'
+  'Channel':pastebin_default_channel
 }
 
 google_custom_default_settings = {
   'Enable':True,
   'Expire_date':180,
-  'Exclude_list':[],
-  'Channel':'codescraper'
+  'Channel':google_custom_default_channel
 }
 
 # github_access_token is required for searching github_code (not needed for github and gist search)
@@ -92,11 +95,13 @@ enable_gitlab_snippet_search = False
 # Pastebin Search is required pro account and to ask pastebin to whitelist your IP
 enable_pastebin_search = False
 enable_google_custom_search = False
+enable_rss_feed = True
+enable_twitter = True
 
 # Interval (Write in Crontab Format)
 github_search_interval = "28 */1 * * *"
 github_code_search_interval = "48 */1 * * *"
-gist_search_interval = "02 */1 * * *"
+gist_search_interval = "02 */2 * * *"
 gitlab_search_interval = "13 */2 * * *"
 gitlab_snippet_search_interval = "43 */2 * * *"
 #pastebin_search_interval = "*/1 * * * *"
@@ -104,3 +109,5 @@ gitlab_snippet_search_interval = "43 */2 * * *"
 # free google api allows 100 requests per day
 # if you set search interval to every 2 hour, you can register at most 8 search candidates (12 * 8 = 96 reqs)
 google_custom_search_interval = "53 */2 * * *"
+rss_feed_interval = "07 */1 * * *"
+twitter_interval = "14 */1 * * *"

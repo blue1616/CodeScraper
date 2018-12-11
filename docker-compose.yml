@@ -1,0 +1,21 @@
+iversion: "2"
+services:
+  codescraper:
+    image: codescraper:alpine
+    build: .
+    restart: always
+    environment:
+      DB_HOST: cs-db
+      DB_PORT: 27017
+    links:
+      - cs-db
+    volumes:
+      - $PWD/master/slackbot_settings.py:/home/codescraper/master/slackbot_settings.py
+  cs-db:
+    image: mongo
+    restart: always
+    volumes:
+      - db-contents:/data/db
+volumes:
+  db-contents:
+    driver: local
