@@ -6,8 +6,7 @@ import slackbot_settings
 def postNewPoCFound(word, repos, channel):
   url = 'https://github.com'
   slack = Slacker(slackbot_settings.API_TOKEN)
-    try:
-
+  try:
     slack.chat.post_message(
       channel,
       'New Code Found about `' + word  + '` at _github_',
