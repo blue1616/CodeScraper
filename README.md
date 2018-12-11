@@ -60,31 +60,31 @@ Edit your config file
   - channels(Line 17-19)
     - Set slack channels that your slackbot join
     - At least one channel must be listed
-  - Enable Targets(Line 87-94)
+  - Enable Targets(Line 90-99)
     - Select whether to enable each search target(True|False)
     - Separate settings are required to activate the following targets
       - github_code : github_access_token must be set
       - pastebin : Pastebin PRO account(Paid Account) and Static IP is required. You have to set your static IP to whitelist for using scraping API
       - google_custom : google_custom_api_key and google_custom_search_engine_id must be set
-  - default_channel
+  - default_channel (Line 22-30)
     - Channel that notifies search results of each target
     - It is possible to change for each search keyword
     - If string not listing in 'channels' is set, the first channel of 'channels' is specified.
 
 - Optional settings
-  - github_access_token(Line 78)
+  - github_access_token(Line 81)
     - It requires if github_code is enabled
     - Get from [here](https://github.com/settings/tokens)
-  - google_custom_api_key(Line 83)
+  - google_custom_api_key(Line 86)
     - It requires if google_custom is enabled
     - Get from [here](https://console.developers.google.com/)
-  - google_custom_search_engine_id
+  - google_custom_search_engine_id(Line 87)
     - It requires if google_custom is enabled
     - Get from [here](https://console.developers.google.com/)
-  - Interval(Line 97-106)
+  - Interval(Line 102-113)
     - Set search execution time for each search target
     - Set in crontab format
-  - default_settings(Line 23-74)
+  - default_settings(Line 33-77)
     - Default settings of earh target
     - The contents of each item are as shown in the table below
 

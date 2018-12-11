@@ -62,31 +62,31 @@ vim ./master/slackbot_settings.py
     - Slackボットに通知させる Slackチャンネルを指定します
     - 上記で作成した Slackボット をここに記載するチャンネルに参加させておいてください
     - 最低でも1つ以上のチャンネルを記載しておく必要が有ります
-  - Enable Targets(87〜94行目)
+  - Enable Targets(90〜99行目)
     - 有効化する検索ターゲットを選択してください(True|False)
     - 以下のターゲットを有効化するには別途設定が必要です
       - github_code : github_access_token の設定が必要です
       - pastebin : Pastebin PRO account(有償)と固定IPが必要です. 購入後、Pastebin に対してScraping API を利用する固定IPをホワイトリスト登録するように設定する必要があります
       - google_custom : google_custom_api_key と google_custom_search_engine_id の設定が必要になります
-  - default_channel(23〜74行目)
+  - default_channel(22〜30行目)
     - 各ターゲットの検索結果を通知するチャンネルです
     - 各検索キーワードごとに変更することも可能です
     - channels に記載のない文字列が記載されている場合、channels の先頭のチャンネルが指定されます
 
 - 任意設定
-  - github_access_token(78行目)
+  - github_access_token(81行目)
     - github_code を有効にした場合必要です
     - [ここ](https://github.com/settings/tokens) から取得してください
-  - google_custom_api_key(83行目)
+  - google_custom_api_key(86行目)
     - google_custom を有効にした場合必要です
     - [ここ](https://console.developers.google.com/) から取得してください
-  - google_custom_search_engine_id
+  - google_custom_search_engine_id(87行目)
     - google_custom を有効にした場合必要です
     - [ここ](https://console.developers.google.com/) から取得してください
-  - Interval(97〜106行目)
+  - Interval(102〜113行目)
     - 各検索ターゲットの検索実行時間を設定します
     - crontab の形式で記載します
-  - default_settings(23〜74行目)
+  - default_settings(33〜77行目)
     - 各検索ターゲットにキーワードを登録する際のデフォルトの設定です
     - 各項目の内容は以下の表の通りです
 
