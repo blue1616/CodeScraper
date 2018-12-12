@@ -2,6 +2,7 @@
 
 from slacker import Slacker
 import slackbot_settings
+import traceback
 
 def postNewPoCFound(word, repos, channel):
   url = 'https://github.com'
@@ -20,8 +21,9 @@ def postNewPoCFound(word, repos, channel):
       message,
       as_user=True
       )
-  except slacker.Error as err:
-    print("Could not send slack notification. Error: %s", err)
+  except:
+    print("Could not send slack notification.")
+    print(traceback.format_exc())
 
 def postAnyData(word, channel):
   slack = Slacker(slackbot_settings.API_TOKEN)
@@ -31,8 +33,9 @@ def postAnyData(word, channel):
       word,
       as_user=True
       )
-  except slacker.Error as err:
-    print("Could not send slack notification. Error: %s", err)
+  except:
+    print("Could not send slack notification.")
+    print(traceback.format_exc())
 
 #if __name__ == '__main__':
 #  slack = Slacker(slackbot_settings.API_TOKEN)

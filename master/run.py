@@ -354,10 +354,6 @@ def runSearchPastebin():
                 postdata = 'pastebin serach failed in _pastebin_.\nStatus Code: ' + str(statuscode)
                 master.postAnyData(postdata, channel)
                 logger.info(postdata)
-#                if statuscode == -1:
-#                  for e in results.values()[0]:
-#                    master.postAnyData(e, channel)
-#                    logger.info(postdata)
                 if error_safety > safe_limit:
                   postdata = 'Too Many Errors. _Pastebin_ Module is disabled for safety'
                   ec.disable(target)
@@ -533,9 +529,9 @@ def runRSSFeeds():
                 ff = filterFeeds(result, w)
                 if ff != []:
                   if c in filteredfeeds.keys():
-                    filteredfeeds[c].append(ff)
+                    filteredfeeds[c] += ff
                   else:
-                    filteredfeeds[c] = [ff]
+                    filteredfeeds[c] = ff
             else:
               if result != {}:
                 filteredfeeds[channel] = result
