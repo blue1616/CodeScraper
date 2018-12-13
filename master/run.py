@@ -24,6 +24,30 @@ logger.addHandler(fh)
 formatter = logging.Formatter('%(asctime)s - %(levelname)s - line %(lineno)d - %(name)s - %(filename)s - \n*** %(message)s')
 fh.setFormatter(formatter)
 
+def doSpecialAct(target, channel, key, result):
+  if target == 'github':
+    pass
+  elif target == 'gist':
+    pass
+  elif target == 'github_code':
+    pass
+  elif target == 'gitlab':
+    pass
+  elif target == 'gitlab_snippet':
+    pass
+  elif target == 'google_custom':
+    pass
+  elif target == 'pastebin':
+    pass
+  elif target == 'twitter':
+    pass
+
+def getSpecialChannel():
+  try:
+    channel = slackbot_settings.special_action_channel
+  except NameError:
+    return []
+
 def runSearchGithub():
   try:
     logger.info('--START GITHUB SEARCH--')
@@ -58,6 +82,8 @@ def runSearchGithub():
           else:
             ec.setSafetyCount(target, 0)
             if result != []:
+              if channel in getSpecialChannel:
+                doSpecialAct(target, channel, key['KEY'], result)
               master.postNewPoCFound(key['KEY'], result, channel)
               logger.info('keyword : ' + key['KEY'])
               logger.info('\n'.join(result))
@@ -108,13 +134,16 @@ def runSearchGithubCode():
               logger.info(postdata)
           else:
             ec.setSafetyCount('github_code', 0)
+            if key['__INITIAL__'] == True:
+              ec.haveSearched(target, key['Index'])
             if result != []:
               postdata = 'New Code Found about `' + key['KEY'] + '` in _github_code_'
               master.postAnyData(postdata, channel)
               if key['__INITIAL__'] == True:
                 master.postAnyData(result[0], channel)
-                ec.haveSearched(target, key['Index'])
               else:
+                if channel in getSpecialChannel:
+                  doSpecialAct(target, channel, key['KEY'], result)
                 master.postAnyData('\n'.join(result), channel)
               logger.info('keyword : ' + key['KEY'])
               logger.info('\n'.join(result))
@@ -166,6 +195,8 @@ def runSearchGist():
           else:
             ec.setSafetyCount(target, 0)
             if result != []:
+              if channel in getSpecialChannel:
+                doSpecialAct(target, channel, key['KEY'], result)
               postdata = 'New Code Found about `' + key['KEY'] + '` in _gist_'
               master.postAnyData(postdata, channel)
               master.postAnyData('\n'.join(result), channel)
@@ -217,6 +248,8 @@ def runSearchGitlab():
           else:
             if error_safety != 0:
               ec.setSafetyCount(target, 0)
+            if key['__INITIAL__'] == True:
+              ec.haveSearched(target, key['Index'])
             if result != []:
               postdata = 'New Code Found about `' + key['KEY'] + '` in _gitlab_'
               master.postAnyData(postdata, channel)
@@ -225,8 +258,9 @@ def runSearchGitlab():
                 url.append('https://gitlab.com' + i)
               if key['__INITIAL__'] == True:
                 master.postAnyData(url[0], channel)
-                ec.haveSearched(target, key['Index'])
               else:
+                if channel in getSpecialChannel:
+                  doSpecialAct(target, channel, key['KEY'], url)
                 master.postAnyData('\n'.join(url), channel)
               logger.info('keyword : ' + key['KEY'])
               logger.info('\n'.join(url))
@@ -295,6 +329,8 @@ def runSearchGitlabSnippets():
                   logger.info('https://gitlab.com' + i)
 #                exclude = list(set(results[word]) & set(keywords[word][1]))
                 exclude = results[key['KEY']]
+                if channel in getSpecialChannel:
+                  doSpecialAct(target, channel, key['KEY'], url)
                 master.postAnyData('\n'.join(url), channel)
                 ec.clearExcludeList(target, key['Index'])
                 ec.addExcludeList(target, key['Index'], exclude)
@@ -366,6 +402,8 @@ def runSearchPastebin():
                     if results[key['KEY']] != []:
                       channel = key['Channel']
                       postdata = 'New Code Found about `' + key['KEY'] + '` in _pastebin_'
+                      if channel in getSpecialChannel:
+                        doSpecialAct(target, channel, key['KEY'], results[key['KEY']])
                       master.postAnyData(postdata, channel)
                       logger.info(postdata)
                       exclude = results[key['KEY']]
@@ -410,16 +448,19 @@ def runSearchGoogleCustom():
           else:
             result_post = list(set(result.keys()) - set(key['Exclude_list']))
             ec.setSafetyCount(target, 0)
+            if key['__INITIAL__'] == True:
+              ec.haveSearched(target, key['Index'])
             if result_post != []:
               postdata = 'New Code Found about `' + key['KEY'] + '` in _google_custom_'
               master.postAnyData(postdata, channel)
               logger.info(postdata)
               if key['__INITIAL__'] == True:
                 result_post = result_post[:1]
-                ec.haveSearched(target, key['Index'])
               for i in result_post:
                 logger.info(i)
                 post_code = result[i][0] + '\n' + i + '\n'
+                if channel in getSpecialChannel:
+                  doSpecialAct(target, channel, key['KEY'], post_code)
                 master.postAnyData(post_code, channel)
               exclude = list(result.keys())
 #                  ec.clearExcludeList('google_custom', conf['Index'])
@@ -539,6 +580,8 @@ def runRSSFeeds():
             ec.setRSSLastPost(key['Name'], lastpost)
             if filteredfeeds != {}:
               for c, feeds in filteredfeeds.items():
+                if c in getSpecialChannel:
+                  doSpecialAct(target, c, key['Name'], feeds)
                 postdata = 'New Feed in `' + key['Name'] + '`'
                 master.postAnyData(postdata, c)
                 logger.info(postdata)
@@ -601,6 +644,8 @@ def runTwitterSearch():
               postdata += ' (FROM: '+ tw['user'] + ')\n'
               postdata += '>>>' + tw['tweet'] + '\n'
               logger.info(postdata)
+              if c in getSpecialChannel:
+                doSpecialAct(target, channel, key['KEY'], tw)
               master.postAnyData(postdata, channel)
           time.sleep(30)
   except:
