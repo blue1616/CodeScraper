@@ -45,6 +45,10 @@ def doSpecialAct(target, channel, key, result):
 def getSpecialChannel():
   try:
     channel = slackbot_settings.special_action_channel
+    if type(channel) != list:
+      return []
+    else:
+      return channel
   except NameError:
     return []
 
