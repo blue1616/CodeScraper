@@ -49,7 +49,7 @@ def getSpecialChannel():
       return []
     else:
       return channel
-  except NameError:
+  except:
     return []
 
 def runSearchGithub():
@@ -845,7 +845,7 @@ def main():
     else:
       ec.disable('twitter')
 
-  except NameError:
+  except AttributeError:
     print('slackbot_settings is something wrong')
     sys.exit(0)
 
