@@ -86,7 +86,7 @@ def runSearchGithub():
           else:
             ec.setSafetyCount(target, 0)
             if result != []:
-              if channel in getSpecialChannel:
+              if channel in getSpecialChannel():
                 doSpecialAct(target, channel, key['KEY'], result)
               master.postNewPoCFound(key['KEY'], result, channel)
               logger.info('keyword : ' + key['KEY'])
@@ -146,7 +146,7 @@ def runSearchGithubCode():
               if key['__INITIAL__'] == True:
                 master.postAnyData(result[0], channel)
               else:
-                if channel in getSpecialChannel:
+                if channel in getSpecialChannel():
                   doSpecialAct(target, channel, key['KEY'], result)
                 master.postAnyData('\n'.join(result), channel)
               logger.info('keyword : ' + key['KEY'])
@@ -199,7 +199,7 @@ def runSearchGist():
           else:
             ec.setSafetyCount(target, 0)
             if result != []:
-              if channel in getSpecialChannel:
+              if channel in getSpecialChannel():
                 doSpecialAct(target, channel, key['KEY'], result)
               postdata = 'New Code Found about `' + key['KEY'] + '` in _gist_'
               master.postAnyData(postdata, channel)
@@ -263,7 +263,7 @@ def runSearchGitlab():
               if key['__INITIAL__'] == True:
                 master.postAnyData(url[0], channel)
               else:
-                if channel in getSpecialChannel:
+                if channel in getSpecialChannel():
                   doSpecialAct(target, channel, key['KEY'], url)
                 master.postAnyData('\n'.join(url), channel)
               logger.info('keyword : ' + key['KEY'])
@@ -333,7 +333,7 @@ def runSearchGitlabSnippets():
                   logger.info('https://gitlab.com' + i)
 #                exclude = list(set(results[word]) & set(keywords[word][1]))
                 exclude = results[key['KEY']]
-                if channel in getSpecialChannel:
+                if channel in getSpecialChannel():
                   doSpecialAct(target, channel, key['KEY'], url)
                 master.postAnyData('\n'.join(url), channel)
                 ec.clearExcludeList(target, key['Index'])
@@ -406,7 +406,7 @@ def runSearchPastebin():
                     if results[key['KEY']] != []:
                       channel = key['Channel']
                       postdata = 'New Code Found about `' + key['KEY'] + '` in _pastebin_'
-                      if channel in getSpecialChannel:
+                      if channel in getSpecialChannel():
                         doSpecialAct(target, channel, key['KEY'], results[key['KEY']])
                       master.postAnyData(postdata, channel)
                       logger.info(postdata)
@@ -463,7 +463,7 @@ def runSearchGoogleCustom():
               for i in result_post:
                 logger.info(i)
                 post_code = result[i][0] + '\n' + i + '\n'
-                if channel in getSpecialChannel:
+                if channel in getSpecialChannel():
                   doSpecialAct(target, channel, key['KEY'], post_code)
                 master.postAnyData(post_code, channel)
               exclude = list(result.keys())
@@ -584,7 +584,7 @@ def runRSSFeeds():
             ec.setRSSLastPost(key['Name'], lastpost)
             if filteredfeeds != {}:
               for c, feeds in filteredfeeds.items():
-                if c in getSpecialChannel:
+                if c in getSpecialChannel():
                   doSpecialAct(target, c, key['Name'], feeds)
                 postdata = 'New Feed in `' + key['Name'] + '`'
                 master.postAnyData(postdata, c)
@@ -648,7 +648,7 @@ def runTwitterSearch():
               postdata += ' (FROM: '+ tw['user'] + ')\n'
               postdata += '>>>' + tw['tweet'] + '\n'
               logger.info(postdata)
-              if c in getSpecialChannel:
+              if c in getSpecialChannel():
                 doSpecialAct(target, channel, key['KEY'], tw)
               master.postAnyData(postdata, channel)
           time.sleep(30)
