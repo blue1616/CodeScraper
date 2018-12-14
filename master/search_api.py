@@ -244,10 +244,12 @@ def parseRSS(items):
   parseddata = []
   for item in items:
     data = {
-      'link' : item['link'],
-      'title' : item['title'],
-      'summary' : item['summary']
+      'link' : item['link']
     }
+    if 'title' in item.keys():
+      data['title'] = item['title']
+    if 'summary' in item.keys():
+      data['summary'] = item['summary']
     if 'updated' in item.keys() and item['updated'] != '':
       dt = parser.parse(item['updated'])
       if dt.tzinfo == None:

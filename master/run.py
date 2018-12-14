@@ -61,7 +61,7 @@ def runSearchGithub():
     target = 'github'
     keywords = ec.getEnableKeywords(target)
 
-    if keywords != None and keywords != []:
+    if ec.isEnable(target) and keywords != None and keywords != []:
       safe_limit = 6
       error_safety = ec.getSafetyCount(target)
       for key in keywords:
@@ -116,7 +116,7 @@ def runSearchGithubCode():
     target = 'github_code'
     keywords = ec.getEnableKeywords(target)
 
-    if keywords != None and keywords != []:
+    if ec.isEnable(target) and keywords != None and keywords != []:
       safe_limit = 6
       error_safety = ec.getSafetyCount(target)
       for key in keywords:
@@ -174,7 +174,7 @@ def runSearchGist():
     target = 'gist'
     keywords = ec.getEnableKeywords(target)
 
-    if keywords != None and keywords != []:
+    if ec.isEnable(target) and keywords != None and keywords != []:
       safe_limit = 6
       error_safety = ec.getSafetyCount(target)
       for key in keywords:
@@ -229,7 +229,7 @@ def runSearchGitlab():
     target = 'gitlab'
     keywords = ec.getEnableKeywords(target)
 
-    if keywords != None and keywords != []:
+    if ec.isEnable(target) and keywords != None and keywords != []:
       safe_limit = 6
       error_safety = ec.getSafetyCount(target)
       for key in keywords:
@@ -291,7 +291,7 @@ def runSearchGitlabSnippets():
     target = 'gitlab_snippet'
     keywords = ec.getEnableKeywords(target)
 
-    if keywords != None and keywords != []:
+    if ec.isEnable(target) and keywords != None and keywords != []:
       safe_limit = 6
       error_safety = ec.getSafetyCount(target)
       for key in keywords:
@@ -352,7 +352,7 @@ def runSearchPastebin():
       target = 'pastebin'
       keywords = ec.getEnableKeywords(target)
 
-      if keywords != None and keywords != []:
+      if ec.isEnable(target) and keywords != None and keywords != []:
         safe_limit = 6
         error_safety = ec.getSafetyCount(target)
         for key in keywords:
@@ -430,7 +430,7 @@ def runSearchGoogleCustom():
     target = 'google_custom'
     keywords = ec.getEnableKeywords(target)
 
-    if keywords != None and keywords != []:
+    if ec.isEnable(target) and keywords != None and keywords != []:
       safe_limit = 6
       error_safety = ec.getSafetyCount(target)
       for key in keywords:
@@ -537,7 +537,7 @@ def runRSSFeeds():
     target = 'rss_feed'
     keywords = ec.getEnableKeywords(target)
 
-    if keywords != None and keywords != []:
+    if ec.isEnable(target) and keywords != None and keywords != []:
       safe_limit = 6
       error_safety = ec.getSafetyCount(target)
 
@@ -608,7 +608,7 @@ def runTwitterSearch():
     target = 'twitter'
     keywords = ec.getEnableKeywords(target)
 
-    if keywords != None and keywords != []:
+    if ec.isEnable(target) and keywords != None and keywords != []:
       safe_limit = 6
       error_safety = ec.getSafetyCount(target)
 
@@ -648,7 +648,7 @@ def runTwitterSearch():
               postdata += ' (FROM: '+ tw['user'] + ')\n'
               postdata += '>>>' + tw['tweet'] + '\n'
               logger.info(postdata)
-              if c in getSpecialChannel():
+              if channel in getSpecialChannel():
                 doSpecialAct(target, channel, key['KEY'], tw)
               master.postAnyData(postdata, channel)
           time.sleep(30)
