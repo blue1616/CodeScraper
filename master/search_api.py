@@ -288,14 +288,13 @@ def getRSSFeeds(url, lastpost):
       rss = feedparser.parse(response.text)
       result = parseRSS(rss['entries'])
       for entry in result:
-  #      if entry['timestamp'] != None and lastpost['timestamp'] != None:
-  #        if datetime.datetime.strptime(entry['timestamp'], '%Y-%m-%d %H:%M:%S') > datetime.datetime.strptime(lastpost['timestamp'], '%Y-%m-%d %H:%M:%S'):
-  #          updateditems.append(entry)
-  #      else:
-        if entry['link'] != lastpost['link']:
-          updateditems.append(entry)
-        else:
+        if entry['link'] == lastpost['link']:
           break
+        else:
+          if entry['timestamp'] != None and lastpost['timestamp'] != None:
+            if datetime.datetime.strptime(entry['timestamp'], '%Y-%m-%d %H:%M:%S') < datetime.datetime.strptime(lastpost['timestamp'], '%Y-%m-%d %H:%M:%S'):
+              break
+          updateditems.append(entry)
     return updateditems, statuscode
   except:
     return [], -1
@@ -341,10 +340,14 @@ def getTweets(users, word, lastpost):
             t['tweet'] = txt
             t['id'] = tweetPQ.attr("data-tweet-id")
             t['link'] = tweetPQ.attr("data-permalink-path")
+            t['timestamp'] = int(tweetPQ("small.time span.js-short-timestamp").attr("data-time"))
             tweetslist.append(t)
       for tw in tweetslist:
         if tw['id'] == lastpost['id']:
           break
+        if 'timestamp' in tw.keys() and 'timestamp' in lastpost.keys():
+          if tw['timestamp'] < lastpost['timestamp']:
+            break
         new_tweets.append(tw)
     return new_tweets, statuscode
   except:
