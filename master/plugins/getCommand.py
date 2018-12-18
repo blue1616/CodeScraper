@@ -192,7 +192,7 @@ def setSearchLevel(message, params):
       index = int(words[0].strip())
       if len(words) > 1:
         if words[1].strip().isdigit():
-          valid_num = [1, 2]
+          valid_num = [1, 2, 3, 4]
           if int(words[1].strip()) in valid_num:
             ret = ec.setSearchLevel(target, index, int(words[1].strip()))
             if ret == '':

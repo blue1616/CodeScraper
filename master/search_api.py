@@ -25,15 +25,16 @@ from pyquery import PyQuery
 
 def searchGithub(word, day, level):
   searchlevel = {
-    1: 'in:name,descrition',
-    2: 'in:name,descrition,readme',
-    3: 'in:name,descrition,readme'}
+    1: ['in:name,description', 'created'],
+    2: ['in:name,description,readme', 'created'],
+    3: ['in:name,description', 'pushed'],
+    4: ['in:name,description,readme', 'pushed']}
   github_url = 'https://api.github.com/search/repositories?q='
   try:
     if word.find(' ') > 0:
       word.replace(' ', '\" \"')
     word = urllib.parse.quote('\"' + word + '\"')
-    url = github_url + word + '+' + searchlevel[level] + '+created:>' + day
+    url = github_url + word + '+' + searchlevel[level][0] + '+' + searchlevel[level][1] + ':>' + day + '&s=updated&o=desc'
     headers = {"Accept": "application/vnd.github.mercy-preview+json"}
     result = requests.get(url, timeout=10, headers=headers)
     statuscode = result.status_code
@@ -51,7 +52,8 @@ def searchGithubCode(word, level, api_key):
   searchlevel = {
     1: 'in:file',
     2: 'in:file,path',
-    3: 'in:file,path'}
+    3: 'in:file,path',
+    4: 'in:file,path'}
   github_url = 'https://api.github.com/search/code?q='
   try:
     if word.find(' ') > 0:
@@ -192,7 +194,7 @@ def scrapePastebin(words, items):
       else:
         wordlist[w] = w.split(' ')
     for k,v in items.items():
-      raw_result = requests.get(v[1], timeout=10)
+      raw_result = requests.get(v[1], timeout=15)
       statuscode = raw_result.status_code
       if statuscode == 200:
         for w, patt in pattlist.items():

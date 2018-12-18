@@ -172,7 +172,7 @@ def setDefaultSettings(target, default_dict):
       if k in setter.keys():
         if type(default_dict[k]) != type(setter[k]):
           return False
-        if k == 'SearchLevel' and not default_dict['SearchLevel'] in [1,2]:
+        if k == 'SearchLevel' and not default_dict['SearchLevel'] in [1,2,3,4]:
           return False
         if k == 'Channel' and not default_dict['Channel'] in channels:
           default_dict['Channel'] = channels[0]
