@@ -9,7 +9,7 @@ Currently the following functions are implemented.
 |---|---|---|
 |github|Search Github and find new repositories||
 |gist|Search Github and find new Gist||
-|github_code|Do Github code search<br>it depends on Github Index|Github API Token is required|
+|github_code|Do Github code search<br>it depends on Github Indexing|Github API Token is required|
 |gitlab|Search Gitlab and find new projects||
 |gitlab_snippet|Scraping new posts of Gitlab Snippets|Regular Expression is available.|
 |google_custom|Search with Google Custom Search and find web pages|Make Search Engine and set your Engine ID and API Token.<br>Free Google API has limit of 100 requests per day|
@@ -91,7 +91,7 @@ Edit your config file
 |item|Description|
 |---|---|
 |Enable|Set whether a keyword is enable or not(True&#124;False)|
-|SearchLevel|Set search range in github or github_code(1&#124;2). Search level 2 searchs for wider range than 1|
+|SearchLevel|Set search range in github(1&#124;2&#124;3&#124;4) or github_code(1&#124;2). Larger numbers give more results|
 |Time_Range|Set Search Time Range in github or gist. Items created before the set number of days are searched|
 |Expire_date|Set keyword expiration date. The expiration date will be after the number of days set here, from the date at the time of registration. The keywords that have expired will be invalidated|
 |Exclude_list|Notice exclusion list. This setting is unnecessary as scripts automatically rewrites.|

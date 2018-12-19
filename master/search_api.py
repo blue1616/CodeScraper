@@ -34,7 +34,7 @@ def searchGithub(word, day, level):
     if word.find(' ') > 0:
       word.replace(' ', '\" \"')
     word = urllib.parse.quote('\"' + word + '\"')
-    url = github_url + word + '+' + searchlevel[level][0] + '+' + searchlevel[level][1] + ':>' + day + '&s=updated&o=desc'
+    url = github_url + word + '+' + searchlevel[level][0] + '+' + searchlevel[level][1] + ':>' + day + '&s=updated&o=asc'
     headers = {"Accept": "application/vnd.github.mercy-preview+json"}
     result = requests.get(url, timeout=10, headers=headers)
     statuscode = result.status_code
