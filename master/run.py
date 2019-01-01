@@ -96,7 +96,7 @@ def runSearchGithub():
               ec.addExcludeList(target, key['Index'], exclude)
           time.sleep(10)
         else:
-          postdata = '`' + key['Index'] + '` expired in _github_, and was disabled.'
+          postdata = '`' + key['KEY'] + '` expired in _github_, and was disabled.'
           logger.info(postdata)
           master.postAnyData(postdata, channel)
           ec.enableKeywordSetting(target, key['Index'], False)
@@ -353,7 +353,7 @@ def runSearchPastebin():
       keywords = ec.getEnableKeywords(target)
 
       if ec.isEnable(target) and keywords != None and keywords != []:
-        safe_limit = 6
+        safe_limit = 10
         error_safety = ec.getSafetyCount(target)
         for key in keywords:
           channel = key['Channel']
@@ -372,6 +372,11 @@ def runSearchPastebin():
             postdata = 'pastebin serach failed in _pastebin_.\nStatus Code: ' + str(statuscode)
             master.postAnyData(postdata, channel)
             logger.info(postdata)
+            if error_safety == 5:
+              postdata = 'Pause to access pastebin'
+              master.postAnyData(postdata, channel)
+              logger.info(postdata)
+              time.sleep(300)
             if error_safety > safe_limit:
               postdata = 'Too Many Errors. _Pastebin_ Module is disabled for safety'
               ec.disable('pastebin')

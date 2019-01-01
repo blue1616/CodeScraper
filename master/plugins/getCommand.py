@@ -201,6 +201,8 @@ def setSearchLevel(message, params):
               post_data = 'Set `{keyword}` Search Level to {level}'.format(keyword=ret, level=words[1].strip())
           else:
             post_data = 'Invalid Search Level'
+        else:
+          post_data = 'Please Put Index of the Word'
       else:
         post_data = 'Parameter Shortage'
     else:
@@ -930,7 +932,7 @@ Command List:
  (abbreviation=enableK:)
 \'disableKeyword: target; [index]\'\tDisable the Search Keyword indicated by [index].
  (abbreviation=disableK:)
-\'setSearchLevel: target; [index]\'\tSet Search Level of Github Search (1:easily 2:) indicated by [index]. It is used in github and github_code.
+\'setSearchLevel: target; [index]\'\tSet Search Level of Github Search (1-4) or Gihub Code Search (1-2) indicated by [index].
  (abbreviation=setSL:)
 \'setExpireDate: target; [index]; [expiration date]\'\tSet a Expiration Date of the Keyword indicated by [index]. [expiration date] Format is YYYY-mm-dd.
  (abbreviation=setED:)
